@@ -23,6 +23,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Hibernate5Module 추가
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
 
 	compileOnly 'org.projectlombok:lombok'
@@ -30,11 +32,11 @@ dependencies {
 
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//JUnit4 추가
+
+	// JUnit4 추가
 	testImplementation("org.junit.vintage:junit-vintage-engine") {
 		exclude group: "org.hamcrest", module: "hamcrest-core"
 	}
-
 }
 
 test {
