@@ -45,7 +45,7 @@ public class OrderSimpleApiController {
     }
 
     /**
-     * V2. 각 API 스펙에 맞게 DTO 변환 및 반환 (fetch join 사용 X)
+     * V2. 엔티티를 조회해서 각 API 스펙에 맞게 DTO 변환 및 반환 (fetch join 사용 X)
      * - Result 객체로 감싸서 반환한다. -> API 유연성 증가
      * - 1 + N + N 문제 발생 (N : orderList size, Member, Delivery) -> 모든 연관관계 LAZY 설정 및 V3 페치 조인
      */
@@ -60,7 +60,7 @@ public class OrderSimpleApiController {
     }
 
     /**
-     * V3. DTO 변환 및 fetch join 사용
+     * V3. 엔티티를 조회해서 DTO 변환 및 fetch join 사용
      * - fetch join 쿼리 1번 호출
      */
     @GetMapping("/api/v3/simple-orders")

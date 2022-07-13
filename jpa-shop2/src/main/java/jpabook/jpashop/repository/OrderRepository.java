@@ -130,6 +130,7 @@ public class OrderRepository {
                 .getResultList();
     }
 
+    // OrderSimpleQueryRepository 로 이동한다.
     public List<OrderSimpleQueryDto> findOrderDtos() {
         return em.createQuery(
                 "select new jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto(o.id, m.name, o.orderDate, o.status, d.address)" +
