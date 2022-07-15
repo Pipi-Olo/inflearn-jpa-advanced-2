@@ -7,10 +7,10 @@ import lombok.Data;
 public class OrderItemQueryDto {
 
     @JsonIgnore
-    private Long orderId; //주문번호
-    private String itemName;//상품 명
-    private int orderPrice; //주문 가격
-    private int count;      //주문 수량
+    private Long orderId; // OrderQueryRepository 에서 필수는 아니다. 다른 예제를 위한 필드
+    private String itemName;
+    private int orderPrice;
+    private int count;
 
     public OrderItemQueryDto(Long orderId, String itemName, int orderPrice, int count) {
         this.orderId = orderId;

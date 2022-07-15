@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(of = "orderId")
+@EqualsAndHashCode(of = "orderId") // OrderAPIController V6 에서 중복을 제거할 때 필요
 public class OrderQueryDto {
 
     private Long orderId;
     private String name;
-    private LocalDateTime orderDate; //주문시간
+    private LocalDateTime orderDate;
     private OrderStatus orderStatus;
     private Address address;
     private List<OrderItemQueryDto> orderItems;
