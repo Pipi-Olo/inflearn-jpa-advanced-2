@@ -9,6 +9,7 @@ import jpabook.jpashop.repository.order.query.OrderFlatDto;
 import jpabook.jpashop.repository.order.query.OrderItemQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryRepository;
+import jpabook.jpashop.service.OrderQueryService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,8 @@ public class OrderApiController {
 
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
+
+    private final OrderQueryService orderQueryService;
 
     /**
      * V1. 엔티티 직접 노출
@@ -98,6 +101,19 @@ public class OrderApiController {
     }
 
     /**
+     * OrderService & OrderQueryService 분리 및 관리
+     * - OSIV 끈다.
+     * - 유지보수 라이프 사이클이 다르다.
+     *   - OrderService 핵심 비지니스 로직은 기업 정책에 맞춘 서비스이다.
+     *   - OrderQueryService 특정 화면이나 API 에 맞춘 서비스이다.
+     */
+    @GetMapping("/api/v3.2/orders")
+    public Result findOrdersV3_queryService() {
+        List<OrderQueryService.OrderDto> ordersV3 = orderQueryService.findOrdersV3();
+        return new Result(ordersV3, ordersV3.size());
+    }
+
+    /**
      * V4. JPA 에서 DTO 바로 조회, 컬렉션 N 조회 (1 + N Query 문제)
      * - 페이징 가능
      */
@@ -144,7 +160,6 @@ public class OrderApiController {
         private T data;
         private int count;
     }
-
     @Data
     static class OrderDto {
 
@@ -181,4 +196,5 @@ public class OrderApiController {
             this.count = orderItem.getCount();
         }
     }
+
 }
