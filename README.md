@@ -95,7 +95,7 @@ public class MemberApiController {
     * `Result` 클래스를 외부에 감싸서 반환한다.
       * 향후 필요한 필드를 추가할 수 있다.
       * API 스펙의 유연성이 증가한다.
-* 엔티티를 외부에 노출하면 안 된다. 각 API 스펙에 맞는 `DTO` 를 반환하자.
+* <span style="color:Orchid">엔티티를 외부에 노출하면 안 된다. 각 API 스펙에 맞는 `DTO` 를 반환하자.</span>
 
 > **참고**
 > `PATCH` 는 엔티티의 부분 업데이트가 필요할 때 사용한다. 전체 업데이트는 `PUT` 을 사용한다.
@@ -202,7 +202,7 @@ public class OrderSimpleQueryRepository {
     * `order` 조회 1번 (N : order 개수)
     * `order → member` 지연로딩 조회 N 번
     * `order → address` 지연로딩 조회 N 번
-* `V3` 👉 DTO 변환 및 페치 조인
+* <span style="color:Orchid">`V3` 👉 DTO 변환 및 페치 조인</span>
   * 페치 조인을 통해 쿼리가 1번만 실행된다. → 성능 최적화
   * 마치 즉시 로딩처럼 연관된 엔티티들을 조인해서 1번에 가져온다.
 * `V4` 👉 JPA 에서 DTO 직접 조회
@@ -212,7 +212,7 @@ public class OrderSimpleQueryRepository {
   * 특정 API 스펙에 의존적인 리포지토리가 생긴다.
     * 각 API 스펙에 의존적인 DTO 를 통해 엔티티를 분리했다.
     * 리포지토리가 특정 DTO 에 의존적이다. → 특정 API 에 의존적이다. → 특정 컨트롤러에 의존적이다.
-* `V5` 👉 DTO 조회 전용 리포지토리
+* <span style="color:Orchid">`V5` 👉 DTO 조회 전용 리포지토리</span>
   * 유지보수 라이프 사이클이 다르다.
     * 엔티티를 반환하는 핵심 로직과 특정 API 에 의존적인 로직의 라이프 사이클은 다르다.
     * 엔티티 반환 로직과 DTO 반환 로직을 분리한다.
@@ -422,7 +422,7 @@ public class OrderQueryRepository {
   * `ManyToMany` 는 사용하지 않는다.
 * `V1` 👉 엔티티 외부 노출
 * `V2` 👉 엔티티 조회 및 DTO 변환
-* `V3` 👉 페치 조인 최적화
+* <span style="color:Orchid">`V3` 👉 페치 조인 최적화</span>
   * 일대다 조인은 데이터 중복이 발생한다. → `distinct` 사용한다.
     * JPQL `distinct` 는 SQL 에 `distinct` 를 추가하고 애플리케이션에서 엔티티 중복을 제거한다.
   * `order` 관점에서 데이터 중복이 발생한다. 
@@ -432,7 +432,7 @@ public class OrderQueryRepository {
   * 페이징이 불가능하다.
     * 애플리케이션에서 데이터 중복이 해결된다.
     * 하지만, 페이징은 데이터 중복이 존재하는 데이터베이스에서 동작해야 한다.
-* `V3.1` 👉 페이징 한계 돌파
+* <span style="color:Orchid">`V3.1` 👉 페이징 한계 돌파</span>
   * `ToOne` 연관관계 엔티티는 모두 페치 조인 한다.
   * 컬렉션 엔티티는 지연로딩으로 조회한다. → `1 + N` 문제
     * 하지만, 페치 조인을 하면 데이터 중복이 발생해 페이징 불가능하다.
@@ -442,10 +442,11 @@ public class OrderQueryRepository {
   * 페이징이 가능하다.
 * `V4` 👉 JPA 에서 DTO 직접 조회
   * `ToOne` 연관관계들은 한 번에 조회하고 `ToMany` 연관관계는 각각 처리한다. → `1 + N` 문제  
-* `V5` 👉 JPA 에서 DTO 직접 조회 + 컬렉션 성능 최적화
+* <span style="color:Orchid">`V5` 👉 JPA 에서 DTO 직접 조회 + 컬렉션 성능 최적화</span>
   * `ToOne` 연관관계들은 한 번에 조회하고 얻은 식별자를 통해 `ToMany` 연관관계를 한 번에 조회한다. → `1 + 1` 성능 최적화
     * 컬렉션을 한 번의 IN 쿼리를 통해 해결한다.
     * DTO 방식이기 때문에 `@BatchSize` 적용되지 않는다.
+  * 페이징이 가능하다.
 * `V6` 👉 JPA 에서 DTO 직접 조회 + 플랫 데이터 성능 최적화
   * 데이터 중복을 고려하지 않고 조인을 통해 한 번에 가져온다. → 성능 최적화
   * 데이터 중복 제거 로직이 애플리케이션 메모리에서 동작한다.
@@ -454,15 +455,15 @@ public class OrderQueryRepository {
 > **하이버네이트 컬렉션 페치 조인 페이징**
 > 하이버네이트는 경고 로그와 함께 모든 데이터를 데이터베이스에서 읽어온다. 그리고 애플리케이션 메모리에서 페이징을 시도한다. 메모리 부족으로 전체 애플리케이션이 종료될 수 있다.
 
-> **참고**
-> 컬렉션 페치 조인은 1개만 사용할 수 있다. 2개 이상의 컬렉션 페치 조인은 데이터 정합성이 깨진다.
-
 > **`hibernate_default_batch_size`**
 > 크기는 100 ~ 1000 사이를 권장한다. SQL IN 쿼리를 사용하는데, 데이터베이스에 따라 IN 쿼리를 1000개로 제한한다. 애플리케이션은 100이든 1000이든 결국 메모리 사용량은 같다. 100개를 10번 쿼리를 보내느냐, 1000개를 1번 쿼리로 보내느냐 차이이다.
 
 > **엔티티 조회 vs DTO 조회**
 > **엔티티 조회 방식**은 JPA 성능 최적화로 단순한 코드를 유지하면서 성능을 최적화 할 수 있다. 코드를 거의 수정하지 않고 옵션의 변경을 통해 다양한 성능 최적화가 가능하다.
 > **DTO 조회 방식**은 성능 최적화를 위해서는 많은 코드의 변경이 필요하다. 성능 최적화와 코드의 복잡도 사이에서 적절한 선택을 해야한다.
+
+> **참고**
+> 컬렉션 페치 조인은 1개만 사용할 수 있다. 2개 이상의 컬렉션 페치 조인은 데이터 정합성이 깨진다.
 
 > **쿼리 방식 선택 순서**
 > * 엔티티 조회 방식
@@ -475,3 +476,41 @@ public class OrderQueryRepository {
 ---
 
 # OSIV와 성능 최적화
+* Open Session In View : 하이버네이트
+Open EntitiyManager In View : JPA 
+→ 관례상 `OSIV` 라 한다.
+
+## OSIV ON
+![](https://velog.velcdn.com/images/pipiolo/post/cdb00f83-9600-46ac-b625-921b6b2e4c77/image.png)
+
+* `spring.jpa.open-in-view: true` 👉 기본 값
+  * 스프링은 기본 값이 true 면서 동시에 `WARN` 로그를 남긴다.
+* 커넥션 시작부터 API 응답까지 영속성 컨텍스트와 데이터베이스 커넥션을 유지한다.
+  * View Template 혹은 Controller 에서 지연로딩이 가능하다.
+* 오랜 시간동안 커넥션을 사용하기 때문에, 커넥션이 부족할 수 있다.
+  * 실시간 트래픽이 많은 애플리케이션은 커넥션 부족 현상이 일어난다.
+
+## OSIV OFF
+![](https://velog.velcdn.com/images/pipiolo/post/2dfdaa54-92fc-4dfb-8a14-558287c1be57/image.png)
+
+* `spring.jpa.open-in-view: false`
+* 트랜잭션이 종료될 때, 영속성 컨텍스트를 닫고 커넥션을 반환한다.
+  * 커넥션 리소스 낭비가 없다.
+* 모든 지연로딩을 트랜잭션 안에서 처리해야 한다.
+  * View Template 혹은 Controller 에서 지연로딩이 동작하지 않는다.
+  
+## Command와 Query 분리
+* `OSIV` 를 종료하고 `Command` 와 `Query` 를 분리한다.
+  * 비지니스 로직은 엔티티 등록 및 수정하는 것으로 성능이 문제가 되지 않는다.
+  * 복잡한 화면을 출력하기 위한 쿼리는 성능 최적화가 중요하다. 핵심 비지니스에 큰 영향을 주지 않는다.
+  * 유지보수 라이프 사이클이 다르다. → 명확하게 분리한다.
+* `Service` 👉 `Service` + `QueryService`
+  * `Service` → 핵심 비지니스 로직
+  * `QueryService` → 화면 혹은 API 전용 서비스 로직 
+    * 주로 읽기 전용 트랜잭션을 사용한다.
+
+> **참고**
+> 실시간 고객 서비스는 `OSIV` 를 끄고, 
+ADMIN 등 커넥션이 많이 필요없는 경우에는 `OSIV` 를 킨다.
+
+---
